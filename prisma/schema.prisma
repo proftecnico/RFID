@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         String   @default("USER") // ADMIN or USER
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  details   String?
+  movements Movement[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model ContainerType {
+  id        String   @id @default(cuid())
+  brand     String
+  model     String
+  tags      Tag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([brand, model])
+}
+
+model Tag {
+  id              String         @id @default(cuid())
+  epc             String         @unique
+  containerTypeId String?
+  containerType   ContainerType? @relation(fields: [containerTypeId], references: [id])
+  movements       Movement[]
+  isActive        Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model AntennaConfig {
+  id          String   @id @default(cuid())
+  name        String   @unique // "Antena 1" or "Antena 2"
+  port        String   // Puerto serial COMX
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Movement {
+  id           String    @id @default(cuid())
+  tagId        String
+  tag          Tag       @relation(fields: [tagId], references: [id])
+  timestamp   DateTime  @default(now())
+  direction   String    // "ENTRY" or "EXIT"
+  antennaPort Int       // 8 for Entry, 9 for Exit
+  supplierId  String?
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  observations String?
+}
