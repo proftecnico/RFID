@@ -15,14 +15,19 @@ export async function POST(req: NextRequest) {
     // Determine direction based on configured antennas
     let direction = "ENTRY";
     try {
-      const antennas = await prisma.$queryRaw`SELECT * FROM AntennaConfig WHERE isActive = 1` as any[];
-      const ant = antennas.find((a: any) => a.port === antennaPort);
+      const antennas = await prisma.antennaConfig.findMany({
+        where: { isActive: true }
+      });
+      const ant = antennas.find((a: any) => a.port === antennaPort || a.port === `COM${antennaPort}`);
       if (ant) {
         const desc = (ant.description || ant.name).toLowerCase();
         direction = desc.includes("salida") || desc.includes("exit") ? "EXIT" : "ENTRY";
+      } else {
+        // Fallback if not found in DB
+        direction = antennaPort === 3 || antennaPort === "COM3" || antennaPort === 8 || antennaPort === "COM8" ? "ENTRY" : "EXIT";
       }
-    } catch {
-      direction = antennaPort === 8 || antennaPort === "COM8" ? "ENTRY" : "EXIT";
+    } catch (err) {
+      direction = antennaPort === 3 || antennaPort === "COM3" || antennaPort === 8 || antennaPort === "COM8" ? "ENTRY" : "EXIT";
     }
 
     // Upsert Tag
