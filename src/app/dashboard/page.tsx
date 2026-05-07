@@ -66,17 +66,17 @@ export default function DashboardPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-8 bg-slate-950">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             <Activity className="text-blue-500" />
             Monitor en Vivo
           </h1>
-          <p className="text-slate-400 mt-1 pb-4">
+          <p className="text-slate-400 mt-1 md:pb-4">
             Lecturas de antenas en tiempo real.
           </p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full">
+        <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full w-full md:w-auto justify-center md:justify-start">
           <div className={`h-2.5 w-2.5 rounded-full ${isConnected ? "bg-emerald-500 animate-pulse" : "bg-red-500"}`} />
           <span className="text-sm font-medium text-slate-300">
             {isConnected ? "Conectado al Lector" : "Desconectado"}

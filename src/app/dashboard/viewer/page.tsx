@@ -112,36 +112,38 @@ export default function ViewerPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-8 bg-slate-950 min-h-screen">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             <Radio className="text-blue-500" />
             Visor Local RFID
           </h1>
-          <p className="text-slate-400 mt-1 pb-4">
+          <p className="text-slate-400 mt-1 md:pb-4">
             Emulación del programa de lectura y registro histórico.
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          <div className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg justify-center">
             <div className={`h-2.5 w-2.5 rounded-full ${isConnected ? "bg-emerald-500 animate-pulse" : "bg-red-500"}`} />
             <span className="text-sm font-medium text-slate-300">
               {isConnected ? "Conectado" : "Desconectado"}
             </span>
           </div>
-          <button 
-            onClick={downloadCSV}
-            disabled={history.length === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-lg transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Download size={16} /> Descargar CSV
-          </button>
-          <button 
-            onClick={clearData}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition-colors text-sm font-medium"
-          >
-            <Trash2 size={16} /> Limpiar
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={downloadCSV}
+              disabled={history.length === 0}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-lg transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Download size={16} /> <span className="hidden sm:inline">Descargar</span> CSV
+            </button>
+            <button 
+              onClick={clearData}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition-colors text-sm font-medium"
+            >
+              <Trash2 size={16} /> Limpiar
+            </button>
+          </div>
         </div>
       </div>
       

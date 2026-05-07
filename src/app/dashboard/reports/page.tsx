@@ -1,7 +1,8 @@
 import { getMovements } from "@/app/actions/movements";
 import { getSuppliers } from "@/app/actions/suppliers";
-import { FileText, Download } from "lucide-react";
+import { FileText } from "lucide-react";
 import { MovementRow, MovementRowProps } from "./MovementRow";
+import { ExportButton } from "./ExportButton";
 
 export default async function ReportsPage() {
   const movements = await getMovements();
@@ -9,7 +10,7 @@ export default async function ReportsPage() {
 
   return (
     <div className="flex-1 overflow-y-auto p-8 bg-slate-950">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             <FileText className="text-blue-500" />
@@ -20,10 +21,7 @@ export default async function ReportsPage() {
           </p>
         </div>
         
-        <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors shadow-lg shadow-emerald-500/20 border border-emerald-500/50">
-          <Download size={18} />
-          Exportar a Excel
-        </button>
+        <ExportButton movements={movements} />
       </div>
 
       <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
